@@ -51,7 +51,8 @@ git push
 
 1. [Railway](https://railway.app) → **New Project** → **Provision MySQL**.
 2. Open MySQL → **Variables** / **Connect** and copy host, port, user, password, database.
-3. Build the JDBC URL:
+3. Use Railway’s **public** host (e.g. `*.railway.app`) — **not** `mysql.railway.internal` (Render cannot reach internal hosts).
+4. Build the JDBC URL (must start with `jdbc:mysql://`):
 
    ```text
    jdbc:mysql://HOST:PORT/DATABASE?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
@@ -62,6 +63,8 @@ git push
    ```text
    jdbc:mysql://containers-us-west-123.railway.app:6543/railway?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
    ```
+
+   If Render logs show SSL errors, try `useSSL=false` in the URL instead.
 
 ---
 
@@ -180,10 +183,11 @@ Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:80
 
 | Problem | Fix |
 |---------|-----|
+| **`No open ports detected` / Exited status 1** | App crashed before starting Tomcat — scroll **above** that line in logs for `Communications link failure`, `Access denied`, or `Could not open JPA`. Usually wrong/missing `SPRING_DATASOURCE_*` or using Railway **internal** host instead of **public**. |
 | Blueprint: `invalid runtime java` | Use this repo’s `render.yaml` with `runtime: docker` (not `java`) |
-| Docker build fails | Check Render logs; ensure `pom.xml` and `src/` are under `backend/` |
+| Docker build fails / `"/src": not found` | Use root `Dockerfile` with `dockerContext: .` (see latest commit) |
 | CORS error | `FRONTEND_URL` must exactly match Vercel URL (https, no trailing `/`) |
-| DB connection failed | Verify JDBC URL and Railway credentials |
+| DB connection failed | Verify JDBC URL starts with `jdbc:mysql://`, user/password have no spaces, Railway MySQL is running |
 | Slow first request | Render free tier sleeps after ~15 min idle; first hit may take 30–60 s |
 | Wrong API URL | Update `config.js`, push, hard-refresh (Ctrl+F5) |
 
