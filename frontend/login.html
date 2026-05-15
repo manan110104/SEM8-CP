@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Recruitment System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="brand-header">
+        <span>Adite Technologies LLP</span>
+        <h1>Login</h1>
+    </div>
+    <p class="small">Demo — HR: hr@adite.com / hr123 | Candidate: candidate@adite.com / candidate123 | Interviewer: interviewer@adite.com / interviewer123</p>
+
+    <form id="loginForm">
+        <label for="email">Email</label>
+        <input id="email" type="email" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" required>
+
+        <label for="role">Role</label>
+        <select id="role" required>
+            <option value="">Select role</option>
+            <option value="HR">HR</option>
+            <option value="CANDIDATE">Candidate</option>
+            <option value="INTERVIEWER">Interviewer</option>
+        </select>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="message-box" style="margin-top: 12px;">
+        <p class="small"><strong>New user?</strong> Register before login.</p>
+        <div class="row-actions">
+            <a href="register.html?role=CANDIDATE"><button type="button">Register as Candidate</button></a>
+            <a href="register.html?role=INTERVIEWER"><button type="button">Register as Interviewer</button></a>
+        </div>
+    </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

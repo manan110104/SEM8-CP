@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Recruitment System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+    </div>
+
+    <h1>Register</h1>
+    <p class="small">Only Candidate and Interviewer can self-register.</p>
+    <form id="registerForm">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" required>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" minlength="4" required>
+
+        <label for="role">Role</label>
+        <select id="role" required>
+            <option value="">Select role</option>
+            <option value="CANDIDATE">Candidate</option>
+            <option value="INTERVIEWER">Interviewer</option>
+        </select>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+<script src="js/common.js"></script>
+<script src="js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "name": "adite-recruitment-frontend",
+  "builds": [{ "src": "**/*", "use": "@vercel/static" }],
+  "routes": [
+    { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "cleanUrls": true
+}

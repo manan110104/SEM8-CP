@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interviewer Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="interviewer-home.html">Home Dashboard</a>
+        <a href="#interviewerMessageBox">Message Box</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <h1 id="interviewerWelcome">Interviewer Home</h1>
+    <p id="interviewerMessage" class="small"></p>
+    <div id="interviewerMessageBox" class="message-box">
+        <h2>Message Box</h2>
+        <ul id="interviewerNotifications"></ul>
+    </div>
+
+    <h2>Assigned Interviews</h2>
+    <div id="interviewerInterviews"></div>
+</div>
+<script src="js/common.js"></script>
+<script src="js/interviewer-home.js"></script>
+</body>
+</html>

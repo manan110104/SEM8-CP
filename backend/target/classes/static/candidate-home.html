@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="candidate-home.html">Home Dashboard</a>
+        <a href="#candidateMessageBox">Message Box</a>
+        <a href="jobs.html">View Jobs</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <h1 id="candidateWelcome">Candidate Home</h1>
+    <p id="candidateMessage" class="small"></p>
+    <div id="candidateMessageBox" class="message-box">
+        <h2>Message Box</h2>
+        <ul id="candidateNotifications"></ul>
+    </div>
+
+    <h2>Apply for Job</h2>
+    <form id="applicationForm">
+        <label for="candidateName">Full Name</label>
+        <input id="candidateName" type="text" required>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" required readonly>
+
+        <label for="skills">Skills</label>
+        <input id="skills" type="text" placeholder="Java, SQL, Spring Boot" required>
+
+        <label for="experience">Experience</label>
+        <input id="experience" type="text" placeholder="0-1 years / Fresher" required>
+
+        <button type="submit">Submit Application</button>
+    </form>
+
+    <hr>
+    <h2>My Application Status & Interview Updates</h2>
+    <div id="candidateUpdates"></div>
+</div>
+<script src="js/common.js"></script>
+<script src="js/candidate-home.js"></script>
+</body>
+</html>

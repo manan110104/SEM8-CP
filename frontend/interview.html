@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Interview</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="hr.html">Applications</a>
+        <a href="interview.html">Schedule Interview</a>
+        <a href="#" onclick="logout(); return false;">Logout</a>
+    </div>
+    <h1>Schedule Interview</h1>
+    <p class="small">Link interview to a registered interviewer using their email ID.</p>
+    <form id="interviewForm">
+        <label for="applicationId">Application ID</label>
+        <input id="applicationId" type="number" required>
+        <label for="interviewerEmail">Interviewer Email ID</label>
+        <input id="interviewerEmail" type="email" placeholder="interviewer@adite.com" required>
+        <label for="interviewDateTime">Interview Date & Time</label>
+        <input id="interviewDateTime" type="datetime-local" required>
+        <label for="notes">Interview Notes</label>
+        <textarea id="notes" rows="4" required></textarea>
+        <button type="submit">Schedule Interview</button>
+    </form>
+    <hr>
+    <h2>View Interviews by Application</h2>
+    <div style="display:flex;gap:8px;">
+        <input id="searchApplicationId" type="number" placeholder="Application ID">
+        <button id="fetchInterviewsBtn" type="button">Fetch</button>
+    </div>
+    <ul id="interviewList"></ul>
+</div>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/interview.js"></script>
+</body>
+</html>

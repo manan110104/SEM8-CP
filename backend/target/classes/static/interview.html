@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Scheduling</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="hr.html">Applications</a>
+        <a href="interview.html">Interviews</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <h1>Schedule Interview</h1>
+    <form id="interviewForm">
+        <label for="applicationId">Application ID</label>
+        <input id="applicationId" type="number" required>
+
+        <label for="interviewerEmail">Interviewer Email</label>
+        <input id="interviewerEmail" type="email" required>
+
+        <label for="interviewDateTime">Interview Date & Time</label>
+        <input id="interviewDateTime" type="datetime-local" required>
+
+        <label for="notes">Interview Notes</label>
+        <textarea id="notes" rows="4" required></textarea>
+
+        <button type="submit">Schedule</button>
+    </form>
+
+    <hr>
+
+    <h2>View Interviews by Application</h2>
+    <div style="display: flex; gap: 8px;">
+        <input id="searchApplicationId" type="number" placeholder="Enter Application ID">
+        <button id="fetchInterviewsBtn" type="button">Fetch Interviews</button>
+    </div>
+    <ul id="interviewList"></ul>
+</div>
+<script src="js/common.js"></script>
+<script src="js/interview.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Panel</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="jobs.html">Jobs</a>
+        <a href="interview.html">Interviews</a>
+        <a href="hr.html">Applications</a>
+        <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <h1>HR - Applications</h1>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 12px;">
+        <input id="filterSkill" type="text" placeholder="Filter by skill">
+        <select id="filterStatus">
+            <option value="">All Status</option>
+            <option value="Applied">Applied</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+        <button id="applyFilters" type="button">Search</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Skills</th>
+            <th>Experience</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="applicationsTableBody"></tbody>
+    </table>
+</div>
+<script src="js/common.js"></script>
+<script src="js/hr.js?v=4"></script>
+</body>
+</html>
