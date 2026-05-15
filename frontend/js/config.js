@@ -3,5 +3,5 @@
  * Example: https://recruitment-backend-xxxx.onrender.com/api
  */
 window.API_CONFIG = {
-    baseUrl: "https://your-backend-name.onrender.com/api"
+    baseUrl: "https://sem8-cp-3.onrender.com/api"
 };
