@@ -1,10 +1,10 @@
 services:
   - type: web
     name: recruitment-backend
-    runtime: java
+    runtime: docker
     plan: free
-    buildCommand: cd backend && mvn clean package -DskipTests
-    startCommand: cd backend && java -jar target/recruitment-system-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod

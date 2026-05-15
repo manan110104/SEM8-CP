@@ -7,7 +7,7 @@
 | Layer | Technology |
 |-------|------------|
 | Frontend | HTML, CSS, JavaScript (deployed on **Vercel**) |
-| Backend | Spring Boot REST API (deployed on **Render**) |
+| Backend | Spring Boot REST API (deployed on **Render** via Docker) |
 | Database | MySQL cloud (**Railway**) / H2 for local dev |
 | Notifications | In-app message box + Email (JavaMailSender) |
 
@@ -16,8 +16,8 @@
 ```
 WEB DEPLOYMENT/
 ├── frontend/          → Deploy on Vercel
-├── backend/           → Deploy on Render
-├── render.yaml        → Render blueprint
+├── backend/           → Deploy on Render (Dockerfile)
+├── render.yaml        → Render blueprint (Docker)
 ├── DEPLOYMENT.md      → Full step-by-step deployment guide
 └── README.md
 ```
@@ -59,7 +59,7 @@ python -m http.server 5500
 See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete instructions:
 
 1. Railway MySQL setup
-2. Render backend deployment
+2. Render backend (Docker)
 3. Vercel frontend deployment
 4. Email SMTP configuration
 5. Testing & troubleshooting
