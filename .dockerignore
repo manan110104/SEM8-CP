@@ -1,0 +1,7 @@
+frontend
+.git
+**/.git
+**/target
+*.md
+DEPLOYMENT.md
+README.md

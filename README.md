@@ -16,7 +16,8 @@
 ```
 WEB DEPLOYMENT/
 ├── frontend/          → Deploy on Vercel
-├── backend/           → Deploy on Render (Dockerfile)
+├── backend/           → Spring Boot API
+├── Dockerfile         → Render Docker build (repo root)
 ├── render.yaml        → Render blueprint (Docker)
 ├── DEPLOYMENT.md      → Full step-by-step deployment guide
 └── README.md

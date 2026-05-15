@@ -81,7 +81,7 @@ git push
    | `SPRING_DATASOURCE_PASSWORD` | Railway MySQL password |
    | `FRONTEND_URL` | `https://your-app.vercel.app` (set after Step 3) |
 
-5. Click **Apply**. Render builds using `backend/Dockerfile` (Maven build inside Docker).
+5. Click **Apply**. Render builds using the root `Dockerfile` (copies `backend/src` into the image).
 6. Copy your backend URL when live:
 
    ```text
@@ -97,8 +97,8 @@ git push
    |---------|-------|
    | **Name** | `recruitment-backend` |
    | **Language / Runtime** | **Docker** |
-   | **Dockerfile Path** | `backend/Dockerfile` |
-   | **Docker Context** | `backend` |
+   | **Dockerfile Path** | `Dockerfile` (repo root) |
+   | **Docker Context** | `.` (repo root) |
    | **Plan** | Free |
 
 3. Add the same environment variables as Option A.
@@ -193,7 +193,7 @@ Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:80
 
 | File | Purpose |
 |------|---------|
-| `backend/Dockerfile` | Multi-stage Java 17 build for Render |
+| `Dockerfile` | Multi-stage Java 17 build for Render (repo root) |
 | `render.yaml` | Render blueprint (`runtime: docker`) |
 | `frontend/vercel.json` | Vercel static site config |
 | `frontend/js/config.js` | Production API base URL |
