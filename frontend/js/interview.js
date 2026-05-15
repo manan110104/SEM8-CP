@@ -32,7 +32,7 @@ document.getElementById("interviewForm").addEventListener("submit", async (event
                 notes
             })
         });
-        showToast("Interview scheduled. Emails sent to candidate and interviewer.");
+        showToast("Interview scheduled successfully.");
         if (prefilledApplicationId) {
             setTimeout(() => { window.location.href = "hr.html"; }, 1500);
         } else {

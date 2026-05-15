@@ -9,7 +9,7 @@
 | Frontend | HTML, CSS, JavaScript (deployed on **Vercel**) |
 | Backend | Spring Boot REST API (deployed on **Render** via Docker) |
 | Database | MySQL cloud (**Railway**) / H2 for local dev |
-| Notifications | In-app message box + Email (JavaMailSender) |
+| Notifications | In-app message box on candidate & interviewer dashboards |
 
 ## Project Structure
 
@@ -28,7 +28,7 @@ WEB DEPLOYMENT/
 - Candidate registration, job application, status dashboard
 - HR: shortlist, reject, select, schedule interview
 - Interviewer dashboard with assigned interviews
-- Email notifications on shortlist, reject, interview schedule
+- In-app notifications on shortlist, reject, and interview schedule
 - Cloud-ready CORS, MySQL, environment variables
 
 ## Quick Start (Local)
@@ -61,8 +61,7 @@ See **[DEPLOYMENT.md](DEPLOYMENT.md)** for complete instructions:
 1. Railway MySQL setup
 2. Render backend (Docker)
 3. Vercel frontend deployment
-4. Email SMTP configuration
-5. Testing & troubleshooting
+4. Testing & troubleshooting
 
 ## API Base URL (Production)
 

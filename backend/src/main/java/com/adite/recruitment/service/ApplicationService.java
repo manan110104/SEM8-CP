@@ -12,14 +12,9 @@ import java.util.Map;
 public class ApplicationService {
 
     private final JobApplicationRepository jobApplicationRepository;
-    private final NotificationService notificationService;
 
-    public ApplicationService(
-            JobApplicationRepository jobApplicationRepository,
-            NotificationService notificationService
-    ) {
+    public ApplicationService(JobApplicationRepository jobApplicationRepository) {
         this.jobApplicationRepository = jobApplicationRepository;
-        this.notificationService = notificationService;
     }
 
     public JobApplication apply(JobApplication application) {
@@ -47,23 +42,7 @@ public class ApplicationService {
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Application not found with id: " + id));
         application.setStatus(status);
-        JobApplication saved = jobApplicationRepository.save(application);
-
-        if ("Shortlisted".equalsIgnoreCase(status)) {
-            notificationService.sendShortlistEmail(
-                    saved.getEmail(),
-                    saved.getCandidateName(),
-                    saved.getId()
-            );
-        } else if ("Rejected".equalsIgnoreCase(status)) {
-            notificationService.sendRejectionEmail(
-                    saved.getEmail(),
-                    saved.getCandidateName(),
-                    saved.getId()
-            );
-        }
-
-        return saved;
+        return jobApplicationRepository.save(application);
     }
 
     public List<JobApplication> getApplicationsByEmail(String email) {

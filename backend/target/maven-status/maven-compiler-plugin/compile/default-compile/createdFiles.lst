@@ -12,7 +12,6 @@ com\adite\recruitment\service\InterviewService.class
 com\adite\recruitment\entity\User.class
 com\adite\recruitment\repository\UserRepository.class
 com\adite\recruitment\service\AuthService.class
-com\adite\recruitment\service\NotificationService.class
 com\adite\recruitment\config\DataInitializer.class
 com\adite\recruitment\controller\JobController.class
 com\adite\recruitment\service\JobService.class

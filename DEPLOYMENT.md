@@ -80,7 +80,6 @@ git push
    | `SPRING_DATASOURCE_USERNAME` | Railway MySQL user |
    | `SPRING_DATASOURCE_PASSWORD` | Railway MySQL password |
    | `FRONTEND_URL` | `https://your-app.vercel.app` (set after Step 3) |
-   | `APP_MAIL_ENABLED` | `false` |
 
 5. Click **Apply**. Render builds using `backend/Dockerfile` (Maven build inside Docker).
 6. Copy your backend URL when live:
@@ -169,21 +168,7 @@ Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:80
 
 ---
 
-## Step 5 — Email (optional)
-
-On Render → **Environment**:
-
-| Key | Example |
-|-----|---------|
-| `APP_MAIL_ENABLED` | `true` |
-| `SPRING_MAIL_HOST` | `smtp.gmail.com` |
-| `SPRING_MAIL_PORT` | `587` |
-| `SPRING_MAIL_USERNAME` | your email |
-| `SPRING_MAIL_PASSWORD` | Gmail app password |
-
----
-
-## Step 6 — Test live app
+## Step 5 — Test live app
 
 1. Open your Vercel URL.
 2. Log in with demo credentials (see README).
@@ -212,7 +197,7 @@ On Render → **Environment**:
 | `render.yaml` | Render blueprint (`runtime: docker`) |
 | `frontend/vercel.json` | Vercel static site config |
 | `frontend/js/config.js` | Production API base URL |
-| `backend/src/main/resources/application-prod.properties` | DB, CORS, mail from env vars |
+| `backend/src/main/resources/application-prod.properties` | DB and CORS from env vars |
 
 ---
 

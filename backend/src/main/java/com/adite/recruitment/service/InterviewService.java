@@ -2,7 +2,6 @@ package com.adite.recruitment.service;
 
 import com.adite.recruitment.entity.Interview;
 import com.adite.recruitment.entity.JobApplication;
-import com.adite.recruitment.entity.User;
 import com.adite.recruitment.repository.InterviewRepository;
 import com.adite.recruitment.repository.JobApplicationRepository;
 import com.adite.recruitment.repository.UserRepository;
@@ -19,18 +18,15 @@ public class InterviewService {
     private final InterviewRepository interviewRepository;
     private final JobApplicationRepository jobApplicationRepository;
     private final UserRepository userRepository;
-    private final NotificationService notificationService;
 
     public InterviewService(
             InterviewRepository interviewRepository,
             JobApplicationRepository jobApplicationRepository,
-            UserRepository userRepository,
-            NotificationService notificationService
+            UserRepository userRepository
     ) {
         this.interviewRepository = interviewRepository;
         this.jobApplicationRepository = jobApplicationRepository;
         this.userRepository = userRepository;
-        this.notificationService = notificationService;
     }
 
     public Interview scheduleInterview(Interview interview) {
@@ -51,26 +47,7 @@ public class InterviewService {
         application.setStatus("Interview Scheduled");
         jobApplicationRepository.save(application);
 
-        Interview saved = interviewRepository.save(interview);
-
-        String dateTime = String.valueOf(saved.getInterviewDateTime());
-        notificationService.sendInterviewScheduledToCandidate(
-                application.getEmail(),
-                application.getCandidateName(),
-                application.getId(),
-                dateTime,
-                normalizedEmail,
-                saved.getNotes()
-        );
-        notificationService.sendInterviewAssignedToInterviewer(
-                normalizedEmail,
-                application.getCandidateName(),
-                application.getId(),
-                dateTime,
-                saved.getNotes()
-        );
-
-        return saved;
+        return interviewRepository.save(interview);
     }
 
     public List<Interview> getByApplicationId(Long applicationId) {
