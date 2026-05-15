@@ -1,157 +1,97 @@
 # Deployment Guide — Render + Vercel
 
-Deploy the **WEB DEPLOYMENT** project using:
-
 | Component | Platform |
 |-----------|----------|
-| **Frontend** (`frontend/`) | **Vercel** |
-| **Backend** (`backend/` — Spring Boot / Java 17) | **Render** (Docker) |
-| **Database** (MySQL) | **Railway** |
+| **Frontend** | **Vercel** (`frontend/`) |
+| **Backend** | **Render** (Docker) |
+| **Database** | **Render PostgreSQL** (auto-linked in `render.yaml`) |
 
-> Render blueprints no longer support `runtime: java`. This project uses **`runtime: docker`** with `backend/Dockerfile`.
+> **Do not use Railway MySQL with Render** unless you enjoy connection errors. This project uses **Render Postgres** on the same network as the API.
 
 ---
 
 ## Architecture
 
 ```
-[Browser]
-    │
-    ├──► Vercel  ──►  frontend/*.html, js/config.js
-    │
-    └──► Render  ──►  Spring Boot REST API  (/api/*)
-              │
-              └──► Railway MySQL
+Browser → Vercel (frontend) → Render API (Docker) → Render PostgreSQL
 ```
 
 ---
 
 ## Prerequisites
 
-1. [GitHub](https://github.com) — host this repo  
-2. [Railway](https://railway.app) — MySQL only  
-3. [Render](https://render.com) — backend (Docker)  
-4. [Vercel](https://vercel.com) — frontend  
-5. Java 17+ and Maven (local testing)
+- GitHub account with this repo pushed
+- [Render](https://render.com) account
+- [Vercel](https://vercel.com) account
 
 ---
 
-## Step 0 — Push project to GitHub
+## Step 0 — Push to GitHub
 
 ```powershell
 cd "C:\Users\Administrator\Downloads\SEM 8 CP PROJECT\WEB DEPLOYMENT"
 git add .
-git commit -m "Add Docker Render + Vercel deployment"
+git commit -m "Render Postgres + deploy fixes"
 git push
 ```
 
 ---
 
-## Step 1 — MySQL on Railway
-
-1. [Railway](https://railway.app) → **New Project** → **Provision MySQL**.
-2. Open MySQL → **Variables** / **Connect** and copy host, port, user, password, database.
-3. Use Railway’s **public** host (e.g. `*.railway.app`) — **not** `mysql.railway.internal` (Render cannot reach internal hosts).
-4. Build the JDBC URL (must start with `jdbc:mysql://`):
-
-   ```text
-   jdbc:mysql://HOST:PORT/DATABASE?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
-   ```
-
-   Example:
-
-   ```text
-   jdbc:mysql://containers-us-west-123.railway.app:6543/railway?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
-   ```
-
-   If Render logs show SSL errors, try `useSSL=false` in the URL instead.
-
----
-
-## Step 2 — Backend on Render (Docker)
-
-### Option A — Blueprint (recommended)
+## Step 1 — Deploy backend (Render Blueprint)
 
 1. [Render Dashboard](https://dashboard.render.com) → **Blueprints** → **New Blueprint Instance**.
-2. Connect GitHub and select this repository.
-3. Render reads `render.yaml` and creates `recruitment-backend` with **Docker** runtime.
-4. When prompted, set environment variables:
+2. Connect GitHub → select this repository → branch `main`.
+3. Render creates:
+   - **recruitment-db** (PostgreSQL)
+   - **recruitment-backend** (Docker web service)
+4. When prompted, set only:
 
    | Key | Value |
    |-----|-------|
-   | `SPRING_DATASOURCE_URL` | JDBC URL from Step 1 |
-   | `SPRING_DATASOURCE_USERNAME` | Railway MySQL user |
-   | `SPRING_DATASOURCE_PASSWORD` | Railway MySQL password |
-   | `FRONTEND_URL` | `https://your-app.vercel.app` (set after Step 3) |
+   | `FRONTEND_URL` | `https://your-app.vercel.app` (set after Step 2, or update later) |
 
-5. Click **Apply**. Render builds using the root `Dockerfile` (copies `backend/src` into the image).
-6. Copy your backend URL when live:
+   `DATABASE_URL`, `DB_USERNAME`, and `DB_PASSWORD` are filled automatically from the database.
+
+5. Click **Apply** and wait for **Live** status (first build ~5–10 min).
+
+6. Copy backend URL:
 
    ```text
    https://recruitment-backend-xxxx.onrender.com
    ```
 
-### Option B — Manual Web Service
+7. Test: open `https://recruitment-backend-xxxx.onrender.com/health` — should return `{"status":"ok"}`.
 
-1. **New +** → **Web Service** → connect GitHub repo.
-2. Configure:
+### If you already have an old Render service (MySQL env vars)
 
-   | Setting | Value |
-   |---------|-------|
-   | **Name** | `recruitment-backend` |
-   | **Language / Runtime** | **Docker** |
-   | **Dockerfile Path** | `Dockerfile` (repo root) |
-   | **Docker Context** | `.` (repo root) |
-   | **Plan** | Free |
+Delete the old web service and database, then run the blueprint again **or**:
 
-3. Add the same environment variables as Option A.
-4. **Create Web Service**.
-
-### Dockerfile (already in repo)
-
-```dockerfile
-# backend/Dockerfile — multi-stage build
-FROM maven:3.9-eclipse-temurin-17 AS build
-# ... builds recruitment-system-0.0.1-SNAPSHOT.jar
-FROM eclipse-temurin:17-jre-alpine
-# ... runs with --spring.profiles.active=prod
-```
-
-Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:8080}`.
+1. **New** → **PostgreSQL** → name `recruitment-db`
+2. Web service → **Environment** → add:
+   - `DATABASE_URL` = Internal Database URL (must be `postgresql://` or `jdbc:postgresql://`)
+   - `DB_USERNAME` / `DB_PASSWORD` from Postgres settings
+   - Remove old `SPRING_DATASOURCE_*` variables
 
 ---
 
-## Step 3 — Frontend on Vercel
+## Step 2 — Deploy frontend (Vercel)
 
 1. [Vercel](https://vercel.com) → **Add New** → **Project** → import GitHub repo.
-2. Configure:
-
-   | Setting | Value |
-   |---------|-------|
-   | **Framework Preset** | Other |
-   | **Root Directory** | `frontend` |
-   | **Build Command** | *(empty — static site)* |
-   | **Output Directory** | `.` |
-
-   `frontend/vercel.json` is already configured.
-
-3. **Deploy**. Copy your URL:
-
-   ```text
-   https://adite-recruitment-frontend.vercel.app
-   ```
+2. **Root Directory:** `frontend`
+3. **Build Command:** empty | **Output:** `.`
+4. Deploy and copy URL, e.g. `https://adite-recruitment.vercel.app`
 
 ---
 
-## Step 4 — Connect frontend and backend
+## Step 3 — Connect frontend and backend
 
-1. **Render** → `recruitment-backend` → **Environment** → set:
+1. **Render** → `recruitment-backend` → **Environment**:
 
    ```text
-   FRONTEND_URL=https://adite-recruitment-frontend.vercel.app
+   FRONTEND_URL=https://adite-recruitment.vercel.app
    ```
 
-   No trailing slash. **Manual Deploy** or wait for auto-redeploy.
+   Redeploy after saving.
 
 2. Edit `frontend/js/config.js`:
 
@@ -161,21 +101,16 @@ Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:80
    };
    ```
 
-3. Commit and push (Vercel redeploys):
-
-   ```powershell
-   git add frontend/js/config.js
-   git commit -m "Set production API URL"
-   git push
-   ```
+3. Commit and push.
 
 ---
 
-## Step 5 — Test live app
+## Step 4 — Test
 
-1. Open your Vercel URL.
-2. Log in with demo credentials (see README).
-3. **F12** → **Network** — requests should go to `*.onrender.com/api` with `200` responses.
+1. Open Vercel URL → login: `hr@adite.com` / `hr123`
+2. F12 → Network → API calls hit `onrender.com` with status `200`
+
+Demo users are seeded automatically on first start.
 
 ---
 
@@ -183,33 +118,30 @@ Render injects `PORT`; `application-prod.properties` uses `server.port=${PORT:80
 
 | Problem | Fix |
 |---------|-----|
-| **`No open ports detected` / Exited status 1** | App crashed before starting Tomcat — scroll **above** that line in logs for `Communications link failure`, `Access denied`, or `Could not open JPA`. Usually wrong/missing `SPRING_DATASOURCE_*` or using Railway **internal** host instead of **public**. |
-| Blueprint: `invalid runtime java` | Use this repo’s `render.yaml` with `runtime: docker` (not `java`) |
-| Docker build fails / `"/src": not found` | Use root `Dockerfile` with `dockerContext: .` (see latest commit) |
-| CORS error | `FRONTEND_URL` must exactly match Vercel URL (https, no trailing `/`) |
-| DB connection failed | Verify JDBC URL starts with `jdbc:mysql://`, user/password have no spaces, Railway MySQL is running |
-| Slow first request | Render free tier sleeps after ~15 min idle; first hit may take 30–60 s |
-| Wrong API URL | Update `config.js`, push, hard-refresh (Ctrl+F5) |
+| `AbstractServiceRegistryImpl` / Hibernate error | DB not reachable — use **Render Postgres** + `DATABASE_URL`, not Railway MySQL |
+| `No open ports detected` | App crashed before start — check logs for DB error; confirm `/health` after fix |
+| `invalid runtime java` | Use `runtime: docker` in `render.yaml` (already set) |
+| `"/src": not found` | Use root `Dockerfile` with `dockerContext: .` |
+| CORS error | `FRONTEND_URL` must match Vercel URL exactly (no trailing `/`) |
+| Slow first request | Render free tier sleeps; wait 30–60 s on first hit |
 
 ---
 
-## Project files reference
+## Local development
 
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | Multi-stage Java 17 build for Render (repo root) |
-| `render.yaml` | Render blueprint (`runtime: docker`) |
-| `frontend/vercel.json` | Vercel static site config |
-| `frontend/js/config.js` | Production API base URL |
-| `backend/src/main/resources/application-prod.properties` | DB and CORS from env vars |
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Uses H2 in-memory (`application.properties`). No Postgres required locally.
 
 ---
 
 ## Deployment order
 
-1. GitHub  
-2. Railway MySQL  
-3. Render backend (Docker blueprint or manual)  
-4. Vercel frontend  
-5. Set `FRONTEND_URL` on Render + `config.js` on frontend  
-6. Test login and HR dashboard
+1. GitHub push  
+2. Render Blueprint (API + Postgres)  
+3. Vercel frontend  
+4. `FRONTEND_URL` + `config.js`  
+5. Test login

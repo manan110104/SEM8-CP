@@ -14,6 +14,7 @@ com\adite\recruitment\repository\UserRepository.class
 com\adite\recruitment\service\AuthService.class
 com\adite\recruitment\controller\HealthController.class
 com\adite\recruitment\config\DataInitializer.class
+com\adite\recruitment\config\ProductionDataSourceConfig.class
 com\adite\recruitment\controller\JobController.class
 com\adite\recruitment\service\JobService.class
 com\adite\recruitment\service\ApplicationService.class
